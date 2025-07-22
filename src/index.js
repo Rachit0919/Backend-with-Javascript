@@ -6,7 +6,16 @@ import express from 'express'
 import { DB_NAME } from './constants.js';
 
 
-// connectDB()
+connectDB()
+.then(() =>{
+    const port = process.env.PORT || 8000
+    app.listen(port , () =>{
+        console.log("Server is runn at port: ", port);
+    })
+})
+.catch((error) => {
+    console.log("Mongo DB connection Failed !!!" , error);
+})
 
 
 
@@ -14,7 +23,7 @@ const app = express()
 
 
 // whencever call database always use try catch or promises(bcoz in promises we have resolve, reject)
-
+/*
 (async() => {
     try {
         await mongoose.connect(`${process.env.MONGODB_URI}/${DB_NAME}`)
@@ -24,3 +33,4 @@ const app = express()
         throw error
     }
 })() // this IFEEs more 
+*/
