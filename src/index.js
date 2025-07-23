@@ -5,6 +5,10 @@ import connectDB from './db/index.js'
 import express from 'express'
 import { DB_NAME } from './constants.js';
 
+app.on("error", (error) =>{
+    console.log("ERRRR", error);
+    throw error;
+})
 
 connectDB()
 .then(() =>{
@@ -12,6 +16,8 @@ connectDB()
     app.listen(port , () =>{
         console.log("Server is runn at port: ", port);
     })
+    
+    
 })
 .catch((error) => {
     console.log("Mongo DB connection Failed !!!" , error);
@@ -27,7 +33,10 @@ const app = express()
 (async() => {
     try {
         await mongoose.connect(`${process.env.MONGODB_URI}/${DB_NAME}`)
-        
+        app.on("error", (error) => {
+            console.log("ERRR: ", error);
+            throw error    
+        })
     } catch (error) {
         console.log("MongoDB connection FAILED !!! ", error);
         throw error
