@@ -5,6 +5,8 @@ import connectDB from './db/index.js'
 import express from 'express'
 import { DB_NAME } from './constants.js';
 
+const app = express()
+
 app.on("error", (error) =>{
     console.log("ERRRR", error);
     throw error;
@@ -25,7 +27,6 @@ connectDB()
 
 
 
-const app = express()
 
 
 // whencever call database always use try catch or promises(bcoz in promises we have resolve, reject)
