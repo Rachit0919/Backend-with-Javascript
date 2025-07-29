@@ -5,8 +5,10 @@ import connectDB from './db/index.js'
 import express from 'express'
 import { DB_NAME } from './constants.js';
 
+import {app} from './app.js'
 
-const app = express()
+
+
 
 app.on("error", (error) =>{
     console.log("ERRRR", error);

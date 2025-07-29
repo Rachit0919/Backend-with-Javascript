@@ -19,7 +19,7 @@ app.use(cookieParser())
 
 import userRouter from './routes/user.routes.js'
 
-console.log('👉 Registering user routes');
+
 // declaration of routes
 app.use('/api/v1/users', userRouter)
 
