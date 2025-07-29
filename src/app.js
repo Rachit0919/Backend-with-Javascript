@@ -19,9 +19,10 @@ app.use(cookieParser())
 
 import userRouter from './routes/user.routes.js'
 
-
+console.log('👉 Registering user routes');
 // declaration of routes
 app.use('/api/v1/users', userRouter)
+
 
 // our url will look like that
 // http://localhost:8000/api/v1/users/regirsteruser(register user is just an example it can be any method defined at user.routes.js)

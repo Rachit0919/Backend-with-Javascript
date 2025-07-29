@@ -5,6 +5,7 @@ import connectDB from './db/index.js'
 import express from 'express'
 import { DB_NAME } from './constants.js';
 
+
 const app = express()
 
 app.on("error", (error) =>{
