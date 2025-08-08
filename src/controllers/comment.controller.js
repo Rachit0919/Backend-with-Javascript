@@ -6,7 +6,7 @@ import {asyncHandler} from "../utils/asyncHandler.js"
 import { User } from "../models/user.models.js"
 
 const getVideoComments = asyncHandler(async (req, res) => {
-    //TODO: get all comments for a video
+    
     const {videoId} = req.params
     const {page = 1, limit = 10} = req.query
 
@@ -63,7 +63,7 @@ const getVideoComments = asyncHandler(async (req, res) => {
 })
 
 const addComment = asyncHandler(async (req, res) => {
-    // TODO: add a comment to a video
+    
     const {videoId} = req.params
     const {userID} = req.user
     const {content} = req.body
@@ -108,16 +108,81 @@ const addComment = asyncHandler(async (req, res) => {
 })
 
 const updateComment = asyncHandler(async (req, res) => {
-    // TODO: update a comment
+    
+    const{commentId} = req.params
+
+    if (!commentId) {
+        throw new ApiError(400, "CommentId is required")
+    }
+    const {content} = req.body
+
+    
+
+    if (!content  || content.trim() === "") {
+        throw new ApiError(400, "Comment content is required")
+    }
+
+    const updatedComment = await Comment.findOneAndUpdate(
+        {
+            _id: commentId,
+            owner: req.user?._id
+        },
+        {
+            content
+        },
+        {
+            new: true
+        }
+    )
+    
+    if (!updatedComment) {
+        throw new ApiError(403, "Not authorized to update this comment or comment not found");
+    }
+
+    return res
+    .status(200)
+    .json(
+        new ApiResponse(
+            200,
+            content,
+            "Comment updated successfull"
+        )
+    )
+
+
 })
 
+
 const deleteComment = asyncHandler(async (req, res) => {
-    // TODO: delete a comment
-})
+    const {commentId} = req.params
+
+    if (!commentId) {
+        throw new ApiError(400, "CommentId is required for deleting the comment")
+    }
+
+    const deletedComment = await Comment.findByIdAndDelete({
+        _id: commentId,
+        owner: req.user?._id
+    })
+    if (!deletedComment) {
+        throw new ApiError(404, "Comment not found or you are not authorized to delete this comment")
+    }
+
+    
+
+    return res
+    .status(200)
+    .json(
+        new ApiResponse(
+            200,
+            "Comment deleted successfully"
+        )
+    )
+})  
 
 export {
     getVideoComments, 
     addComment, 
     updateComment,
      deleteComment
-    }
+}
